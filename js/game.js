@@ -16,10 +16,11 @@
       positionMarkers = [],
       check = new Array(6);
 
+
     const init = () => {
       video = document.querySelector('video');
       navigator.mediaDevices.enumerateDevices()
-        .catch(error = console.log('enumerateDevices() error', error))
+        .catch(error => console.log('enumerateDevices() error', error))
         .then(getStream);
 
       takePhotoButton.addEventListener('click', getPicture);
@@ -53,7 +54,7 @@ const gotStream = stream => {
 
 //Take the picture
 const getPicture = () => {
-  shuffle(puzzle);
+  // shuffle(puzzle);
   imageCapture.takePhoto()
     .then((img) => {
       image.src = URL.createObjectURL(img);
@@ -61,7 +62,7 @@ const getPicture = () => {
       setInterval(() => checkDistance(), 1000);
       console.log(puzzle);
     })
-    .catch((error) => {console.log('takePhoto() error', error)})
+    .catch((error) => {console.log('takePhoto() error', error)});
 };
 
 const createImagePieces = image => {
@@ -94,24 +95,12 @@ const createImagePieces = image => {
 
 }
 
-}
-
-  const shuffle = randomArray => {
-    for(let i = randomArray.length - 1; i > 0; i--) {
-      //random from 0 to i
-      const j = Math.floor(Math.random() * (i + 1));
-      // let t = randomArray[i];
-      // randomArray[i] = randomArray[j];
-      // randomArray[j] = t;
-      [randomArray[i], randomArray[j]] = [randomArray[j], randomArray[i]];
-    }
-    return randomArray;
-  }
 
   const checkDistance == () => {
     for(let i = 0; i < markers.length; i++) {
       positionMarkers[i] = markers[i].object3D;
     }
+
     if(positionMarkers[puzzle[0]].position.x - positionMarkers[puzzle[8]].position.x !== 0) {
       for(let i = 0; i < numRow; ++i) {
         if(Math.abs(positionMarkers[puzzle[0 + (3 * i)]].position.x - positionMarkers[puzzle[1 + (3 * i).position.x]]) < tolerance &&
@@ -120,8 +109,7 @@ const createImagePieces = image => {
             Math.abs(positionMarkers[puzzle[1 + (3 * i)]].rotation.x - positionMarkers[puzzle[2 + (3 * i).rotation.x) < tolerance)
 
             check[i] = true;
-      }
-      else{
+      } else {
         check[i] = false;
       }
     }
@@ -132,9 +120,9 @@ const createImagePieces = image => {
             Math.abs(positionMarkers[puzzle[i]].rotation.y - positionMarkers[puzzle[3 + i]].rotation.y) < tolerance &&
             Math.abs(positionMarkers[puzzle[3 + i]].rotation.y - positionMarkers[puzzle[6 + i]].rotation.y) < tolerance)
             check[3+i] = true;
-    }
-    else {
-      check[3+i] = false;
+          } else {
+            check[3+i] = false;
+          }
     }
 
     if(check.every(puzzleCheck)) {
@@ -142,6 +130,20 @@ const createImagePieces = image => {
       const solved = document.querySelector('.solved');
       solved.style.display = "flex";
     }
-  }
 
       const puzzleCheck = check => check === true;
+
+      const shuffle = randomArray => {
+        for(let i = randomArray.length - 1; i > 0; i--) {
+          //random from 0 to i
+          const j = Math.floor(Math.random() * (i + 1));
+          // let t = randomArray[i];
+          // randomArray[i] = randomArray[j];
+          // randomArray[j] = t;
+          [randomArray[i], randomArray[j]] = [randomArray[j], randomArray[i]];
+        }
+        return randomArray;
+      }
+
+      	window.addEventListener(`load`, () => setTimeout(() => init(), 1000));
+      }
