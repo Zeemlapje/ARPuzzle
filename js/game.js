@@ -23,7 +23,7 @@
         .catch(error => console.log('enumerateDevices() error', error))
         .then(getStream);
 
-      takePhotoButton.addEventListener('click', getPicture);
+    document.getElementById("takePhotoButton").addEventListener('click', getPicture());
     }
 
 //Get a video stream from the camera
@@ -58,10 +58,11 @@ const gotStream = stream => {
 //Take the picture
 const getPicture = () => {
   // shuffle(puzzle);
-  imageCapture.takePhoto()
+  imageCapture.takePhoto({imageWidth:720px})
     .then((img) => {
-      image.src = URL.createObjectURL(img);
-      image.addEventListener('load', () => createImagePieces(image));
+      img.src = URL.createObjectURL(img);
+      img.onload = () =>{URL.revokeObjectURL(this.src);}
+      img.addEventListener('load', () => createImagePieces(image));
       setInterval(() => checkDistance(), 1000);
       console.log(puzzle);
     })
