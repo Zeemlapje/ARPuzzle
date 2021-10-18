@@ -25,6 +25,7 @@
 
       takePhotoButton.addEventListener('click', getPicture);
     }
+
 //Get a video stream from the camera
 const getStream = () => {
   .if (mediaStream) {
@@ -36,20 +37,22 @@ const getStream = () => {
       width: 720,
       height: 720,
     }
-  }
+  };
 
   navigator.mediaDevices.getUserMedia(constraints)
     .then(gotStream)
     .catch(error => {
       console.log('getUserMedia error', error);
     });
-};
+}
 
-//Display the stream from the camera and then create an ImageCapture object using that video stream
+//Display the stream from the camera and then
+//create an ImageCapture object using that video stream
 const gotStream = stream => {
   mediaStream = stream;
   video.srcObject = stream;
   imageCapture = new ImageCapture(stream.getVideoTracks()[0]);
+
 };
 
 //Take the picture
@@ -63,9 +66,13 @@ const getPicture = () => {
       console.log(puzzle);
     })
     .catch((error) => {console.log('takePhoto() error', error)});
+
 };
 
+
+
 const createImagePieces = image => {
+
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   const pieceWidth = image.width / numCol;
@@ -74,12 +81,13 @@ const createImagePieces = image => {
   for (let x = 0; x < numCol; ++x) {
     for (let y = 0; y < numRow; ++y) {
       ctx.drawImage(image, x * pieceWidth, y * pieceHeight, pieceWidth, pieceHeight, 0, 0, canvas.width, canvas.height);
-
       imgPieces [8 - pieces] = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+      console.log(imgPieces);
       pieces = pieces - 3;
       if (pieces < 0) {
           pieces = (puzzlePieces - 1) + pieces;
       }
+
     }
   };
 
@@ -97,28 +105,29 @@ const createImagePieces = image => {
 
 
   const checkDistance == () => {
+
     for(let i = 0; i < markers.length; i++) {
       positionMarkers[i] = markers[i].object3D;
     }
 
     if(positionMarkers[puzzle[0]].position.x - positionMarkers[puzzle[8]].position.x !== 0) {
       for(let i = 0; i < numRow; ++i) {
-        if(Math.abs(positionMarkers[puzzle[0 + (3 * i)]].position.x - positionMarkers[puzzle[1 + (3 * i).position.x]]) < tolerance &&
-            Math.abs(positionMarkers[puzzle[1 + (3 * i)]].position.x - positionMarkers[puzzle[2 + (3 * i).position.x) < tolerance &&
-            Math.abs(positionMarkers[puzzle[0 + (3 * i)]].rotation.x - positionMarkers[puzzle[1 + (3 * i).rotation.x) < tolerance &&
-            Math.abs(positionMarkers[puzzle[1 + (3 * i)]].rotation.x - positionMarkers[puzzle[2 + (3 * i).rotation.x) < tolerance)
+        if(Math.abs(positionMarkers[puzzle[0 + (3 * i)]].position.x - positionMarkers[puzzle[1 + (3 * i)]].position.x) < tolerance &&
+            Math.abs(positionMarkers[puzzle[1 + (3 * i)]].position.x - positionMarkers[puzzle[2 + (3 * i)]].position.x) < tolerance &&
+            Math.abs(positionMarkers[puzzle[0 + (3 * i)]].rotation.x - positionMarkers[puzzle[1 + (3 * i)]].rotation.x) < tolerance &&
+            Math.abs(positionMarkers[puzzle[1 + (3 * i)]].rotation.x - positionMarkers[puzzle[2 + (3 * i)]].rotation.x) < tolerance) {
 
             check[i] = true;
-      } else {
-        check[i] = false;
+          } else {
+            check[i] = false;
+        }
       }
-    }
 
     for(let i = 0; i < numCol; ++i) {
         if(Math.abs(positionMarkers[puzzle[i]].position.y - positionMarkers[puzzle[3 + i]].position.y) < tolerance &&
             Math.abs(positionMarkers[puzzle[3 + i]].position.y - positionMarkers[puzzle[6 + i]].position.y) < tolerance &&
             Math.abs(positionMarkers[puzzle[i]].rotation.y - positionMarkers[puzzle[3 + i]].rotation.y) < tolerance &&
-            Math.abs(positionMarkers[puzzle[3 + i]].rotation.y - positionMarkers[puzzle[6 + i]].rotation.y) < tolerance)
+            Math.abs(positionMarkers[puzzle[3 + i]].rotation.y - positionMarkers[puzzle[6 + i]].rotation.y) < tolerance) {
             check[3+i] = true;
           } else {
             check[3+i] = false;
@@ -126,10 +135,12 @@ const createImagePieces = image => {
     }
 
     if(check.every(puzzleCheck)) {
-      console.log('Solved!!!')
+      console.log('Solved!!!');
       const solved = document.querySelector('.solved');
       solved.style.display = "flex";
     }
+  }
+}
 
       const puzzleCheck = check => check === true;
 
